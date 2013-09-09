@@ -11,14 +11,11 @@ require_once 'mysqli.php';
 $db = new Mysqlimproved;
 
 // prepare query for execution
-
 $db->prepare("SELECT * FROM `table` WHERE record='{$record}'");
 
 // execute query
-
 $db->query();
 
 // fetch data
-
 $row = $db->fetch('array'); 
-// $db->fetch() accept to: 'object', 'all_assoc', 'assoc'
+// $db->fetch() accept to: 'object', 'allAssoc', 'assoc'
