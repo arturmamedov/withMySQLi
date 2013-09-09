@@ -1,22 +1,19 @@
 <?php
 
 class Mysqlimproved {
-	// contiene la query
 	private $query;
-	// connessione e risorsa mysqli
 	private $mysqli;
-	// risultato con i dati estratti
 	private $result;
 	
 	public function __construct(){
-		// Parametri di connessione
+		// connection param
 		$host = 'localhost';
 		$user = 'root';
 		$password = 'qweqwe';
 		$database = 'fabwebsite';
 		$charset = 'utf8';
 		
-		// connessione in construct per non chiamare il metodo
+		// connect in constructor
 		$this->connect($host, $user, $password, $database, $charset);
 	}
 	
@@ -24,58 +21,104 @@ class Mysqlimproved {
 		$this->disconnect();
 	}
 
-// Metodo per la connessione
+	/**
+	 * Method for create connection with DB
+	 * @param string $host
+     * @param string $user
+     * @param string $password
+     * @param string $database
+     * @param string $charset
+     * @param string $port
+     * @param string $socket
+     * 
+     * @return boolean
+     * /
 	public function connect($host, $user, $password, $database, $charset, $port = null, $socket = null){
 		// creare la connessione
 		$this->mysqli = new mysqli($host, $user, $password, $database, $port, $socket);
 		
 		if(mysqli_connect_error()){
-			exit('Impossibile connettersi al DataBase'.$mysqli_connect_error);
+			return array('status' => false, 'error' => $mysqli_connect_error);
 		} else {
 			$this->mysqli->set_charset($charset);
 		}
 		
 		return true;
 	}	
-// Per Disconnetterci
+	
+	/**
+	 * Close connection with DB
+	 * /
 	public function disconnect(){
 		$this->mysqli->close();
 		return true;
 	}
 	
-// Per prepaparare la query
+	/**
+	 * Prepare query for execution
+	 * 
+	 * @param string $query
+	 * 
+	 * @return boolean
+	 * /
 	public function prepare($query){
 		$this->query = $query;
 		return true;
 	}
 	
-// Per eseguire la query
+	/**
+	 * Execute prepared query 
+	 * 
+	 * @return boolean (false on error)
+	 * /
 	public function query(){
 		if(isset($this->query)){
 			$this->result = $this->mysqli->query($this->query);
 			if(!$this->result) {
-				exit("Errore nell'interrogazione del DataBase: ".$this->mysqli->error);
-				return false;
+				return array('status' => false, 'error' => $this->mysqli->error);
 			}
 		}	
 	}
 
-// Per fettchare , estrare i dati in un Array o Oggetto
+	/**
+	 * For fetch result data
+	 * 
+	 * @param string $type ('object', 'allAssoc', 'assoc', 'array')
+	 * 
+	 * @return mixed (fetched result) 
+	 * 
+	 * 'assoc', 'object' and 'array': type fetch only one row
+	 * 'allAssoc': fetch all row how associative array
+	 * /
 	public function fetch($type = 'object'){
 		switch($type){
-			case 'array':
-				$row = $this->result->fetch_array();
+			case 'allAssoc':
+				while($res = $this->result->fetch_assoc()){
+					$row[] = $res;
+				}
+				break;
+			case 'assoc':
+				$row = $this->result->fetch_assoc();
 				break;
 			case 'object':
 				$row = $this->result->fetch_object();
 				break;
+			case 'array':
+				$row = $this->result->fetch_array();
+				break;	
 		}
 		$this->result->close();
 		
 		return $row;
 	}
 
-// Per ri pulire i dati
+	/**
+	 * Escape passed data for prevent injection
+	 * 
+	 * @param string $data
+	 * 
+	 * @return string escaped $data 
+	 * /
 	public function escape($data){
 		return $this->mysqli->real_escape_string($data);
 	}
