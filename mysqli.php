@@ -1,5 +1,12 @@
 <?php
-
+/**
+ * @version 1
+ * @author Artur Mamedov <arturmamedov1993@gmail.com>
+ * 
+ * Class for basic work with mysqli library 
+ * discussed in videolessons(italian lang): http://www.obiv.it/video-giornale/7-programmazione-oggetti-php-mysqli-class.html
+ * and video course(italian lang):  http://www.obiv.it/video-corso/oop-mvc-php.html
+ */
 class Mysqlimproved {
 	private $query;
 	private $mysqli;
@@ -21,7 +28,7 @@ class Mysqlimproved {
 		$this->disconnect();
 	}
 
-	/** 
+	/**
 	 * Method for create connection with DB
 	 * @param string $host
      * @param string $user
@@ -32,7 +39,7 @@ class Mysqlimproved {
      * @param string $socket
      * 
      * @return boolean
-     * /
+     */
 	public function connect($host, $user, $password, $database, $charset, $port = null, $socket = null){
 		// creare la connessione
 		$this->mysqli = new mysqli($host, $user, $password, $database, $port, $socket);
@@ -48,7 +55,7 @@ class Mysqlimproved {
 	
 	/**
 	 * Close connection with DB
-	 * /
+	 */
 	public function disconnect(){
 		$this->mysqli->close();
 		return true;
@@ -60,7 +67,7 @@ class Mysqlimproved {
 	 * @param string $query
 	 * 
 	 * @return boolean
-	 * /
+	 */
 	public function prepare($query){
 		$this->query = $query;
 		return true;
@@ -70,7 +77,7 @@ class Mysqlimproved {
 	 * Execute prepared query 
 	 * 
 	 * @return boolean (false on error)
-	 * /
+	 */
 	public function query(){
 		if(isset($this->query)){
 			$this->result = $this->mysqli->query($this->query);
