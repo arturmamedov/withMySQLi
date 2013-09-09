@@ -31,15 +31,15 @@ class Mysqlimproved {
 	/**
 	 * Method for create connection with DB
 	 * @param string $host
-     * @param string $user
-     * @param string $password
-     * @param string $database
-     * @param string $charset
-     * @param string $port
-     * @param string $socket
-     * 
-     * @return boolean
-     */
+	 * @param string $user
+	 * @param string $password
+	 * @param string $database
+	 * @param string $charset
+	 * @param string $port
+	 * @param string $socket
+	 * 
+	 * @return boolean
+	 */
 	public function connect($host, $user, $password, $database, $charset, $port = null, $socket = null){
 		// creare la connessione
 		$this->mysqli = new mysqli($host, $user, $password, $database, $port, $socket);
@@ -96,7 +96,7 @@ class Mysqlimproved {
 	 * 
 	 * 'assoc', 'object' and 'array': type fetch only one row
 	 * 'allAssoc': fetch all row how associative array
-	 * /
+	 */
 	public function fetch($type = 'object'){
 		switch($type){
 			case 'allAssoc':
@@ -125,7 +125,7 @@ class Mysqlimproved {
 	 * @param string $data
 	 * 
 	 * @return string escaped $data 
-	 * /
+	 */
 	public function escape($data){
 		return $this->mysqli->real_escape_string($data);
 	}
