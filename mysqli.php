@@ -21,7 +21,7 @@ class Mysqlimproved {
 		$this->disconnect();
 	}
 
-	/**
+	/** 
 	 * Method for create connection with DB
 	 * @param string $host
      * @param string $user
