@@ -9,7 +9,7 @@ Usage:
 
     // require and create object
     require_once 'mysqli.php';
-    $db = new Mysqlimproved;
+    $db = new Mysqli_Database('localhost', 'root', 'pass', 'db_name');
 
     // prepare query for execution 
     $db->prepare("SELECT * FROM `table` WHERE record='{$record}'");
