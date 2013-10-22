@@ -7,6 +7,9 @@ MySQLi-lightLib is a simple and little class with basic method for work with mys
 
 Usage: 
 
+Retrive data:
+=============
+
     // require and create object
     require_once 'mysqli.php';
     $db = new Mysqli_Database('localhost', 'root', 'pass', 'db_name');
