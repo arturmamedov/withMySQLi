@@ -76,7 +76,7 @@ class Mysqli_Database {
      * @return boolean
      */
     public function prepare($query){
-        $this->query = $query;
+        $this->query = trim($query); // trim cosi se ci sono spazi vuoti e basta il controllo in query() sare true
         return true;
     }
 
@@ -86,12 +86,15 @@ class Mysqli_Database {
      * @return boolean (false on error)
      */
     public function query(){
-        if(isset($this->query)){
-            $this->result = $this->mysqli->query($this->query);
-            if(!$this->result) {
-                return array('status' => false, 'error' => $this->mysqli->error);
-            }
-        }	
+        if(strlen($this->query) == 0)
+            throw new Exception('Mysqli_Database - query can\'t be empty');
+            
+        $this->result = $this->mysqli->query($this->query);
+        
+        if(!$this->result)
+            throw new Exception('Mysqli_Database - MySQLi error: '.$this->mysqli->error);
+        
+        return true;
     }
 
     /**
@@ -124,6 +127,36 @@ class Mysqli_Database {
         $this->result->close();
 
         return $row;
+    }
+    
+    /**
+     * Insert data into db
+     * or string and array:
+     * ex: $this->insert("INSERT INTO users (user_id, first_name, last_name) VALUES (NULL , '%s', '%s', ", array($this->first_name, $this->last_name);
+     * are formatted with vspitnf and escaped by $this->escape
+     * 
+     * or only query string ex: $this->insert("INSERT INTO users (user_id, first_name, last_name) VALUES (NULL , 'Artur', 'Mamedov'")
+     * 
+     * 
+     * @param string $query
+     * @param array $data (are escaped if isset)
+     * 
+     * @return boolean/int  false if an error occur, last insert id if all ok
+     */
+    public function insert($query, $data = null){
+        if(count($data) > 0){
+            // escape all passed data values
+            foreach($data as $d)
+                $params[] = $this->escape($d);
+            
+            $this->prepare(vsprintf($query, $params));
+        } else
+            $this->prepare($query);
+        
+        if(!$this->query())
+            return false;
+        
+        return $this->mysqli->insert_id;
     }
 
     /**
