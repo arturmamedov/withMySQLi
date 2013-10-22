@@ -133,7 +133,7 @@ class Mysqli_Database {
      * Insert data into db
      * array:
      * ex: $this->insert($table, array('user_id' => NULL, 'first_name' => $this->first_name, 'last_name' => $this->last_name);
-     * are formatted with vspitnf and escaped by $this->escape
+     * are quete into and escaped by $this->escape
      * 
      * @todo: only string to improve
      * or only query string ex: $this->insert("INSERT INTO users (user_id, first_name, last_name) VALUES (NULL , 'Artur', 'Mamedov'")
