@@ -6,9 +6,9 @@ MySQLi-lightLib is a simple and little class with basic method for work with mys
 ***
 
 Usage: 
+=============
 
 Retrive data:
-=============
 
     // require and create object
     require_once 'mysqli.php';
@@ -23,5 +23,22 @@ Retrive data:
     // fetch data 
     $row = $db->fetch('array'); 
     // $db->fetch() accept to: 'object', 'allAssoc', 'assoc'
+    
+Insert data:
+
+    $data = array(
+        'user_id' => NULL,
+        'first_name' => $this->first_name,
+        'last_name' => $this->last_name,
+        'mail' =>  $this->mail,
+        'password' => md5($this->password),
+        'type' => $this->type,
+        'verification_key' => $this->vkey,
+        'ts_lastlog' => 'CURRENT_TIMESTAMP', // todo: this dont work because quoted
+        'ts_created' => '2013-10-22 00:00:00',
+        'active' => '0'
+    );
+
+    $user_id = $this->_db->insert('users', $data);
 
 ***
