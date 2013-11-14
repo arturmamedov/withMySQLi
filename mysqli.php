@@ -113,16 +113,18 @@ class Mysqli_Database {
                 while($res = $this->result->fetch_assoc()){
                         $row[] = $res;
                 }
-                break;
+                if(!isset($row))
+                    $row = false;
+            break;
             case 'assoc':
                 $row = $this->result->fetch_assoc();
-                break;
+            break;
             case 'object':
                 $row = $this->result->fetch_object();
-                break;
+            break;
             case 'array':
                 $row = $this->result->fetch_array();
-                break;	
+            break;	
         }
         $this->result->close();
 
