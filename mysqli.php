@@ -113,7 +113,7 @@ class Mysqli_Database {
                 while($res = $this->result->fetch_assoc()){
                         $row[] = $res;
                 }
-                if(!isset($row))
+                if(!isset($row) || $res === NULL)
                     $row = false;
             break;
             case 'assoc':
