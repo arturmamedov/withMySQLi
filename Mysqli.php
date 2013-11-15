@@ -33,7 +33,7 @@ class Database_Mysqli {
     public $charset = 'utf8';
     
     
-    public function __construct($host, $user, $password, $database, $charset = 'utf8', $port = null, $socket = null){
+    public function __construct($host, $user, $password, $database, $charset = null, $port = null, $socket = null){
         // set configuration of connection
         $this->config($host, $user, $password, $database, $charset, $port, $socket);
         // connect in constructor
