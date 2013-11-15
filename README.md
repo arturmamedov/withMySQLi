@@ -1,13 +1,17 @@
 Connect and CRUD withMySQLi
 ===============
-withMySQLi - is a simple and little class with basic method for work with mysqli 
+withMySQLi - is a simple and little class with basic method for work with mysqli
+
 C - Create: by INSERT $db->insert($table, $data_array); // name table, array with pairs, and return last id
+
 R - Read: by SELECT dirretcly with query for a moment ... with good $db->fetch($style);
+
 U - Update: $db->update($table, $data_array, $where); // return affected rows
+
 D - Delete: $db->delete($table, $where); // return affected rows
 
 
-( http://www.obiv.it/video-giornale/7-programmazione-oggetti-php-mysqli-class.html )
+( ita videolessons: http://www.obiv.it/video-giornale/7-programmazione-oggetti-php-mysqli-class.html )
 
 ***
 ***
@@ -15,7 +19,7 @@ D - Delete: $db->delete($table, $where); // return affected rows
 Usage: 
 =============
 
-#### Start
+##### Start: $db
 
 ```php
     // require and create object
@@ -25,26 +29,28 @@ Usage:
 
 ---
 
-#### READ data:
+##### READ data: $db->fetch();
 
 ```php
     // execute query 
     $db->query("SELECT * FROM `table` WHERE record='{$record}'");
 
     // fetch data default FETCH_ASSOC
-    $row = $db->fetch(); // FETCH_NUM, FETCH_BOTH, FETCH_OBJ
+    $row = $db->fetch(); // FETCH_NUM, FETCH_BOTH, FETCH_OBJ ex: $db->fetch('FETCH_OBJ');
     /* 
-        there are to
+        there are another two:
         $db->fetchOne("SELECT * FROM `table` WHERE record='{$record}'"); // for only one field
         $db->fetchRow("SELECT * FROM `table` WHERE record='{$record}'"); // for only one row
+        pass to him the sql query and get result ;)
     */
 ```
 
 ---
     
-#### INSERT data:
+##### INSERT data: $db->insert($table, $data);
 
 ```php
+    //* insert( string $table , array $data);
     $data = array(
         'user_id' => NULL,
         'first_name' => $this->first_name,
@@ -55,30 +61,32 @@ Usage:
         'active' => '0'
     );
 
-    $user_id = $this->_db->insert('users', $data);
+    $user_id = $db->insert('users', $data); // return last inserted id
 ```
 
 ---
     
-#### UPDATE data:
+##### UPDATE data: $db->update($table, $data, $where);
 
 ```php
+    //* update( string $table , array $data, string $where);
     $data = array(
             'mail' => 'artik2007@ukr.net',
             'name' => 'Ciro'
         );
 
-    $this->db->update('users', $data, "user_id = {$user->user_id}");
+    $db->update('users', $data, "user_id = {$user->user_id}");
 ```
 
 ---
     
-#### DELETE data:
+##### DELETE data: $db->delete($table, $where);
 
 ```php
-    $this->db->delete('users', 'user_id = 12'); // one row with where
+    //* delete( string $table , [string $where]);
+    $db->delete('users', 'user_id = 12'); // one row with where
 
-    $this->db->delete('users1'); // entire table !!! because without WHERE
+    $db->delete('users1'); // entire table !!! because without WHERE
 ```
 
 ***
