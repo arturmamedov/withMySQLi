@@ -170,8 +170,6 @@ class Database_Mysqli {
      * Fetches a row from the result set.
      *
      * @param int $style  OPTIONAL Fetch mode for this fetch operation.
-     * @param int $cursor OPTIONAL Absolute, relative, or other.
-     * @param int $offset OPTIONAL Number for absolute or relative cursors.
      * 
      * @return mixed Array, object, or scalar depending on fetch mode.
      * 
