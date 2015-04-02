@@ -30,6 +30,27 @@ class Database_Mysqli {
      */
     protected $_fetchMode = 'FETCH_ASSOC';
     
+    /**
+     * Style fetch FETCH_ASSOC
+     */
+    const FETCH_ASSOC = 'FETCH_ASSOC';
+    /**
+     * Style fetch FETCH_OBJ
+     */
+    const FETCH_OBJ = 'FETCH_OBJ';
+    /**
+     * Style fetch FETCH_BOTH
+     */
+    const FETCH_BOTH = 'FETCH_BOTH';
+    /**
+     * Style fetch FETCH_NUM
+     */
+    const FETCH_NUM = 'FETCH_NUM';
+    
+    /**
+     * The charset of the connection
+     * @var string 
+     */
     public $charset = 'utf8';
     
     
@@ -169,23 +190,26 @@ class Database_Mysqli {
     /**
      * Fetches a row from the result set.
      *
-     * @param int $style  OPTIONAL Fetch mode for this fetch operation.
+     * @param string $style  OPTIONAL Fetch mode for this fetch operation.
+     * @param object $result OPTIONAL The result mysqli object to fetch.
      * 
      * @return mixed Array, object, or scalar depending on fetch mode.
      * 
      * @throws Zend_Db_Statement_Mysqli_Exception
      */
-    public function fetch($style = null, $result = null){
+    public function fetch($style = null, $result = null)
+    {
         // set a result if passed
-        if($result != null)
+        if($result != null) {
             $this->result = $result;
+        }
         
         // make sure we have a fetch mode
         if($style === null) {
             $style = $this->_fetchMode;
         }
 
-        // fetch or throw Esception
+        // fetch or throw Exception
         $row = false;
         switch ($style) {
             case'FETCH_NUM':
@@ -215,7 +239,8 @@ class Database_Mysqli {
      * 
      * return string one field data
      */
-    public function fetchOne($sql){
+    public function fetchOne($sql)
+    {
         $this->query($sql); // retrive data
         
         $res = $this->result->fetch_row();
@@ -230,13 +255,62 @@ class Database_Mysqli {
      * 
      * return string one field data
      */
-    public function fetchRow($sql){
+    public function fetchRow($sql)
+    {
         $this->query($sql); // retrive data
         
         $res = $this->result->fetch_row();
         
         return $res;
     }
+    
+    /**
+     * Fetches a all rows from the result set.
+     *
+     * @param string $style  OPTIONAL Fetch mode for this fetch operation.
+     * @param object $result OPTIONAL The result mysqli object to fetch.
+     * 
+     * @return mixed Array, object, or scalar depending on fetch mode.
+     * 
+     * @throws Zend_Db_Statement_Mysqli_Exception
+     */
+    public function fetchAll($style = null, $result = null)
+    {    
+        // set a result if passed
+        if($result != null) {
+            $this->result = $result;
+        }
+        
+        // make sure we have a fetch mode
+        if($style === null) {
+            $style = $this->_fetchMode;
+        }
+
+        // fetch or throw Exception
+        $row = false;
+        switch ($style) {
+            case'FETCH_ASSOC':
+                while($res = $this->result->fetch_assoc()){
+                    $row[] = $res;
+                }
+            break;
+            case'FETCH_BOTH':
+                while($res = $this->result->fetch_array()){
+                    $row[] = $res;
+                }
+            break;
+            case'FETCH_OBJ':
+                while($res = $this->result->fetch_object()){
+                    $row[] = $res;
+                }
+            break;
+            default:
+                throw new Exception("Invalid fetch mode '$style' specified");
+        }
+        
+        // return data
+        return $row;
+    }   
 
 /* END - Fetch Methods */
     
@@ -319,8 +393,9 @@ class Database_Mysqli {
             $query = "INSERT INTO {$table} ({$columns}) VALUES ($values)";
             
             $this->query($query);
-        } else
+        } else {
             $this->query($data);
+        }
         
         return $this->_connection->insert_id;
     }
@@ -342,8 +417,9 @@ class Database_Mysqli {
         /**
          * Build "col = val" pairs
          */
-        foreach($bind as $col => $val)
+        foreach($bind as $col => $val) {
             $set[] = "{$col} = '{$val}'";
+        }
             
         /**
          * Build the UPDATE statement
@@ -354,10 +430,11 @@ class Database_Mysqli {
          */
         $this->result = $this->query($sql);
             
-        if(($result = $this->_connection->affected_rows) > 0)
+        if(($result = $this->_connection->affected_rows) > 0) {
             return $result;
-        else
+        } else {
             return false;
+        }
     }
 
     /**
@@ -378,10 +455,11 @@ class Database_Mysqli {
          * Execute the statement and return the number of affected rows
          */
         $this->result = $this->query($sql);
-        if(($result = $this->_connection->affected_rows) > 0)
+        if(($result = $this->_connection->affected_rows) > 0) {
             return $result;
-        else
+        } else {
             return false;
+        }
     }
     
     
