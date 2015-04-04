@@ -36,13 +36,15 @@ Usage:
     $db->query("SELECT * FROM `table` WHERE record='{$record}'");
 
     // fetch data default FETCH_ASSOC
-    $row = $db->fetch(); // FETCH_NUM, FETCH_BOTH, FETCH_OBJ ex: $db->fetch('FETCH_OBJ');
+    $row = $db->fetch(); // default: FETCH_ASSOC; other: FETCH_NUM, FETCH_BOTH, FETCH_OBJ ex: $db->fetch('FETCH_OBJ');
     /* 
         there are another two:
         $db->fetchOne("SELECT * FROM `table` WHERE record='{$record}'"); // for only one field
         $db->fetchRow("SELECT * FROM `table` WHERE record='{$record}'"); // for only one row
         pass to him the sql query and get result ;)
     */
+
+    $rows = $db->fetchAll(); // default: FETCH_ASSOC; other: FETCH_BOTH, FETCH_OBJ ex: $db->fetch('FETCH_OBJ');
 ```
 
 ---
